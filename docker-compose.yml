@@ -1,14 +1,19 @@
 # docker-compose.yml
-version: '3.7'
+version: '3.8'
 services:
   jenkins:
-    image: jenkins-blueocean:1.1
+    image: jenkinsblueocean:latest
     privileged: true
+    environment:
+      - DOCKER_HOST=tcp://docker:2376
+      - DOCKER_CERT_PATH=/certs/client
+      - DOCKER_TLS_VERIFY=1
     user: root
     ports:
-      - 8083:8080
+      - 8080:8080
       - 50003:50000
+      - 2376:2376
     container_name: local-jenkins
     volumes:
-      - ~/docker/jenkins_data:/var/jenkins_home
-      - /var/run/docker.sock:/var/run/docker.sock
+      - ~/docker/jenkins-data:/var/jenkins_home
+      - ~/docker/jenkins-docker-certs:/certs/client
